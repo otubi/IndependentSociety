@@ -780,7 +780,6 @@ body {
 /* ===== MENU ITEMS ===== */
 
 
-
 /* ===== GENERAL RESET ===== */
 * {
     margin: 0;
@@ -791,18 +790,18 @@ body {
 
 /* ===== SIDEBAR ===== */
 .sidebar {
-    width: 250px; /* fixed width for consistency */
+    width: 250px; 
     height: 100vh;
-    background: #0c3b59; /* dark sidebar color */
+    background: #0c3b59;
     color: white;
     padding: 25px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: fixed; /* stick to the left */
+    position: fixed;
     top: 0;
     left: 0;
-    border-right: 2px solid #155b85; /* clean separation line */
+    border-right: 2px solid #155b85;
 }
 
 .logo {
@@ -828,11 +827,19 @@ body {
 
 .menu a {
     color: white;
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 12px 15px;
     border-radius: 6px;
     text-decoration: none;
     transition: 0.2s;
+}
+
+.menu a i {
+    margin-right: 12px;
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
 }
 
 .menu a:hover {
@@ -852,9 +859,9 @@ body {
 
 /* ===== MAIN CONTENT ===== */
 .content {
-    margin-left: 250px; /* same as sidebar width */
+    margin-left: 250px;
     padding: 30px;
-    width: calc(100% - 250px); /* remaining width for content */
+    width: calc(100% - 250px);
     background: #eef2f5;
     min-height: 100vh;
 }
@@ -870,11 +877,27 @@ body {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+}
+
+.card-icon {
+    font-size: 35px;
+    margin-bottom: 10px;
+    color: #4a6cf7;
 }
 
 .card h3 {
-    margin-bottom: 10px;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card p {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
 }
 
 /* ===== GRID LAYOUT ===== */
@@ -894,6 +917,16 @@ body {
 
 .activity-list li {
     margin: 8px 0;
+    display: flex;
+    align-items: center;
+}
+
+.activity-list li::before {
+    content: "\f0da"; /* Font Awesome arrow icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 8px;
+    color: #4a6cf7;
 }
 
 /* ===== TABLES ===== */
@@ -934,6 +967,13 @@ tr:nth-child(even) {
     border-radius: 6px;
     color: white;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn i {
+    font-size: 14px;
 }
 
 .btn:hover {
@@ -987,4 +1027,47 @@ tr:nth-child(even) {
     .cards {
         grid-template-columns: 1fr;
     }
+}
+
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.card-left h3 {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.card-left p {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+}
+
+.card-right .icon-circle {
+    width: 50px;
+    height: 50px;
+    background: #f5f5f5;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #4a6cf7;
+    font-size: 24px;
 }
