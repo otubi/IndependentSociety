@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    const mainContent = document.querySelector('main.content');
+
+    // Keep track of previously added section
+    let activeSection = null;
     const API_URL = "http://127.0.0.1:3000/api/v2/users";
     const API_URL_ORDERS = "http://127.0.0.1:3000/api/v2/orders";
     const API_URL_REQ = "http://127.0.0.1:3000/api/v2/requisitions";
@@ -8,7 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ================================== VIEW USERS ================================================= 
 
+    // Select the main content wrapper
+    const $content = document.querySelector(".content");
 
+    // Create the View Users container
     const $viewUser = document.createElement("div");
     $viewUser.className = "action-container";
     $viewUser.id = "view-user";
@@ -21,9 +29,20 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="view-all-actions"></div>
         </div>
     `;
-    document.body.appendChild($viewUser);
-    document.querySelectorAll(".action-container").forEach(el => el.style.display = "none");
 
+    // Append it inside the content wrapper
+    $content.appendChild($viewUser);
+
+    // Hide all other action containers except the dashboard initially
+    document.querySelectorAll(".action-container").forEach(el => {
+        if (el.id !== "dashboard") {
+            el.style.display = "none";
+        }
+    });
+
+    // Optional: Show dashboard by default
+    const $dashboard = document.getElementById("dashboard");
+    if ($dashboard) $dashboard.style.display = "block";
 
 
     const $viewOrder = document.createElement("div");
@@ -167,9 +186,14 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         </div>
     `;
-    document.body.appendChild($orderHTML);
-    document.querySelectorAll(".action-container").forEach(el => el.style.display = "none");
+    $content.appendChild($orderHTML);
 
+    // Hide all other action containers except the dashboard initially
+    document.querySelectorAll(".action-container").forEach(el => {
+        if (el.id !== "dashboard") {
+            el.style.display = "none";
+        }
+    });
 
 
     // ============================== Update Orders ==============================================
@@ -292,32 +316,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    document.querySelectorAll(".nb a").forEach(link => {
-        link.addEventListener("click", function (e) {
+    // Select all sidebar menu links
+    document.querySelectorAll(".sidebar .menu a").forEach(link => {
+        link.addEventListener("click", function(e) {
             e.preventDefault();
+
+            // Get the action text in lowercase
             const action = this.textContent.trim().toLowerCase();
 
-            document.querySelectorAll(".action-container").forEach(el => el.style.display = "none");
+            // Hide all action containers except dashboard
+            document.querySelectorAll(".action-container").forEach(el => {
+                if (el.id !== "dashboard") {
+                    el.style.display = "none";
+                }
+            });
 
-            if (action === "view users") {
-                $viewUser.style.display = "block";
-                fetchAllUsers();
-            } else if (action === "requisitions") {
-                $requisitionHTML.style.display = "block";
-                $deleteUser.querySelector(".delete-results").innerHTML = "";
-                fetchAllRquistionsForUpdate();
-            } else if (action === "orders") {$deleteUser.querySelector(".delete-results").innerHTML = "";
-                $orderHTML.style.display = "block";
-                $orderHTML.querySelector(".delete-results").innerHTML = "";
-                fetchAllOrderForUpdate();
-            }else if (action === "users") {
-                $deleteUser.style.display = "block";
-                $deleteUser.querySelector(".delete-results").innerHTML = "";
-                fetchAllUsersForUpdate()
+            // Show dashboard only if clicked explicitly
+            if (action === "dashboard") {
+                document.getElementById("dashboard").style.display = "block";
+            } else {
+                // Hide dashboard when other items are clicked
+                document.getElementById("dashboard").style.display = "none";
 
+                // Show the selected section
+                if (action === "users") {
+                    $viewUser.style.display = "block";
+                    fetchAllUsers();
+                } else if (action === "requisitions") {
+                    $requisitionHTML.style.display = "block";
+                    $deleteUser.querySelector(".delete-results").innerHTML = "";
+                    fetchAllRquistionsForUpdate();
+                } else if (action === "orders") {
+                    $orderHTML.style.display = "block";
+                    $orderHTML.querySelector(".delete-results").innerHTML = "";
+                    $deleteUser.querySelector(".delete-results").innerHTML = "";
+                    fetchAllOrderForUpdate();
+                }
             }
         });
     });
+
+    // Show dashboard by default on page load
+    window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("dashboard").style.display = "block";
+    });
+
 
     // Delegated click for delete buttons in dynamic tables
 
@@ -1531,9 +1574,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             </div>
         `;
-        document.body.appendChild($requisitionHTML);
-        document.querySelectorAll(".action-container").forEach(el => el.style.display = "none");
+    $content.appendChild($requisitionHTML);
 
+    // Hide all other action containers except the dashboard initially
+    document.querySelectorAll(".action-container").forEach(el => {
+        if (el.id !== "dashboard") {
+            el.style.display = "none";
+        }
+    });
 
  
 
@@ -1723,7 +1771,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => {
                 const Requisitions = res.data?.requisition || [];
                 const filtered = requisitions.filter(requisition => {
-                    return Object.keys(requisitionr).some(key => {
+                    return Object.keys(requisition).some(key => {
                         if (!requisition[key]) return false;
                         return requisition[key].toString().toLowerCase().includes(searchValue);
                     });

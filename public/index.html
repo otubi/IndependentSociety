@@ -3,108 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contract Management System</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <script src="scriptsjs.js"></script>
+    <script src="scriptsjs.js" defer></script>
 </head>
+
 <body>
-    <div class="whole-body" id="wb">
-        <nav class="nb" id="nb">
-            <h2 id="heading">Admin <span id="admin">DASHBOARD</span></h2>
-            <a href="#" class="nav-link">Users</a>
-            <a href="#" class="nav-link">Orders</a>
-            <a href="#" class="nav-link">Requisitions</a>
-        </nav>
-<!--
-    <div class="welcome-container">
-        <div class="welcome-image-container">
-            <img src="" alt="Welcome" />
-        </div>
-        <div class="welcome-content">
-            <h1>Welcome to Our Site</h1>
-            <p>This is some text that goes alongside the image.</p>
-        </div>
-    </div>
--->
 
-        <!-- ADD USER 
-        <div class="action-container" id="action">
-            <h2>Add new user</h2>
-            <div class="signup-page" id="sup">
-                <input type="text" name="_id" placeholder="ID" required> 
-                <input type="text" name="FirstName" placeholder="First Name" required>
-                <input type="text" name="LastName" placeholder="Last Name" required>
-                <input type="date" name="dob" placeholder="Date of birth" required>
-                <input type="date" name="date_created" placeholder="Date created"> 
-            </div>
-            <p><span id="dt">By confirming a new user will be added</span>
-            <button type="submit" id="sb">Add user</button></p>
-        </div>
--->
-        <!-- =========================== DELETE USER ================================-->
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-        
-        <div class="action-container" id="delete-user">
-            <h2>Delete User</h2>
-            <div class="form-fields"></div>
-            <div class="form-actions"></div>
+        <div class="top-menu">
+            <div class="logo">ISI</div>
+
+            <div class="menu-title">MAIN</div>
+            <ul class="menu" id="db_manu">
+                <li><a href="#" data-target="dashboard">Dashboard</a></li>
+            </ul>
+
+            <div class="divider"></div>
+
+            <div class="menu-title">MANAGEMENT</div>
+            <ul class="menu">
+                <li><a href="#" data-target="users">Users</a></li>
+                <li><a href="#" data-target="orders">Orders</a></li>
+                <li><a href="#" data-target="requisitions">Requisitions</a></li>
+            </ul>
         </div>
 
-        <!-- ============================= UPDATE USER ======================================== -->
-
-
-        <div class="action-container" id="update-user">
-            <h2>Update User</h2>
-            <div class="form-fields"></div>
-            <div class="form-actions"></div>
+        <div class="account-section">
+            <div class="menu-title">ACCOUNT</div>
+            <ul class="menu">
+                <li><a href="#" data-target="settings">Settings</a></li>
+                <li><a href="#" data-target="logout">Logout</a></li>
+            </ul>
         </div>
 
-        <!-- VIEW USERS -->
-        <div class="action-container" id="view-user">
-            <h2>View Users</h2>
+    </aside>
 
+    <!-- MAIN CONTENT -->
+    <main class="content">
 
-
-            <!--  ===============  View By ID ============================-->
-
-
-
-            <div class="view-by-id">
-                <input type="text" id="input-user-id" placeholder="Enter User ID">
-                <button id="btn-view-user">View User</button>
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboard" class="action-container">
+            <!-- TOP CARDS -->
+            <div class="cards">
+                <div class="card"><h3>Total Users</h3><p>120</p></div>
+                <div class="card"><h3>Total Orders</h3><p>243</p></div>
+                <div class="card"><h3>Pending Requests</h3><p>19</p></div>
+                <div class="card"><h3>System Status</h3><p>Active</p></div>
             </div>
 
-            <!-- Results for single user -->
-            <div class="view-results"></div>
-
-            <!-- Table of all users -->
-            <div class="view-all">
-                <h3>All Users</h3>
-                <div class="view-all-actions"></div>
-            </div>
-        </div>
-
-
-
-
-        <!--==============================  DELETE USERS    ===========--> 
-
-
-        <div class="action-container" id="delete=user">
-            <div>
-                <h2>DELETE USERS</h2>
-                <div class="delete-by-id">
-                    <input type="text" id="input-user-id" placeholder="Enter User ID">
-                    <button id="delecte-user-id">USER RESULTS</button>
+            <!-- GRID -->
+            <div class="grid-layout">
+                <!-- LATEST ACTIVITY -->
+                <div class="box">
+                    <h2>Latest Activity</h2>
+                    <ul class="activity-list">
+                        <li>Amos logged in</li>
+                        <li>User John updated contract</li>
+                        <li>New requisition submitted</li>
+                        <li>User deleted record</li>
+                        <li>Admin generated report</li>
+                    </ul>
                 </div>
-                <div class="td-result"></div>
-                <div class="check-all">
-                    <h2>CHECK THE LIST OF USERS</h2>
-                    <div class=""></div>
+
+                <!-- SUBMISSIONS TABLE -->
+                <div class="box">
+                    <h2>Submissions By Users</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th><th>Total</th><th>Success</th><th>Failed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Amos</td><td>23</td><td>22</td><td>1</td></tr>
+                            <tr><td>Doreen</td><td>19</td><td>18</td><td>1</td></tr>
+                            <tr><td>George</td><td>31</td><td>31</td><td>0</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            <!-- FULL TABLE -->
+            <h2 class="section-title">All User Records</h2>
+            <div class="table-container">
+                <table class="full-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Date Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Amos Ojok</td>
+                            <td>Admin</td>
+                            <td class="success">Active</td>
+                            <td>2025-01-12</td>
+                            <td><button class="btn">Edit</button></td>
+                        </tr>
+                        <tr>
+                            <td>Doreen Achen</td>
+                            <td>User</td>
+                            <td class="danger">Inactive</td>
+                            <td>2025-02-03</td>
+                            <td><button class="btn">Edit</button></td>
+                        </tr>
+                        <tr>
+                            <td>Leala Naiga</td>
+                            <td>User</td>
+                            <td class="success">Active</td>
+                            <td>2025-01-05</td>
+                            <td><button class="btn">Edit</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <!-- USERS SECTION (initially hidden) -->
+        <div id="users" class="action-container" style="display:none;">
+            <!-- Users content will be dynamically filled via JS -->
+        </div>
+
+        <!-- ORDERS SECTION (initially hidden) -->
+        <div id="orders" class="action-container" style="display:none;">
+            <!-- Orders content will be dynamically filled via JS -->
+        </div>
+
+        <!-- REQUISITIONS SECTION (initially hidden) -->
+        <div id="requisitions" class="action-container" style="display:none;">
+            <!-- Requisitions content will be dynamically filled via JS -->
+        </div>
+
+        <!-- SETTINGS SECTION (initially hidden) -->
+        <div id="settings" class="action-container" style="display:none;">
+            <!-- Settings content -->
+        </div>
+
+    </main>
 
 </body>
 </html>
