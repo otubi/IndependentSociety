@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Farmer Platform Admin Dashboard</title>
 
     <!-- FONT AWESOME ICONS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -20,7 +20,7 @@
     <aside class="sidebar">
 
         <div class="top-menu">
-            <div class="logo">ISI</div>
+            <div class="logo">FarmerApp</div>
 
             <div class="menu-title">MAIN</div>
             <ul class="menu" id="db_manu">
@@ -35,8 +35,8 @@
 
             <div class="menu-title">MANAGEMENT</div>
             <ul class="menu">
-                <li><a href="#" data-target="users"><i class="fa-solid fa-users"></i> Users</a></li>
-                <li><a href="#" data-target="orders"><i class="fa-solid fa-box-open"></i> Orders</a></li>
+                <li><a href="#" data-target="users"><i class="fa-solid fa-users"></i> Farmers</a></li>
+                <li><a href="#" data-target="orders"><i class="fa-solid fa-box-open"></i> Product Orders</a></li>
                 <li><a href="#" data-target="requisitions"><i class="fa-solid fa-file-signature"></i> Requisitions</a></li>
             </ul>
         </div>
@@ -58,78 +58,77 @@
         <div id="dashboard" class="action-container">
 
             <!-- TOP CARDS -->
-        <div class="cards">
+            <div class="cards">
 
-            <div class="card">
-                <div class="card-left">
-                    <h3>Total Submitted Files</h3>
-                    <p>23619</p>
-                </div>
-                <div class="card-right">
-                    <div class="icon-circle">
-                        <i class="fa-solid fa-database"></i>
+                <div class="card">
+                    <div class="card-left">
+                        <h3>Total Products Listed</h3>
+                        <p>23619</p>
+                    </div>
+                    <div class="card-right">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-left">
-                    <h3>Total Active Institutions</h3>
-                    <p>37</p>
-                </div>
-                <div class="card-right">
-                    <div class="icon-circle">
-                        <i class="fa-solid fa-house"></i>
+                <div class="card">
+                    <div class="card-left">
+                        <h3>Partner Institutions</h3>
+                        <p>37</p>
+                    </div>
+                    <div class="card-right">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-left">
-                    <h3>Total Activated Users</h3>
-                    <p>98</p>
-                </div>
-                <div class="card-right">
-                    <div class="icon-circle">
-                        <i class="fa-solid fa-user"></i>
+                <div class="card">
+                    <div class="card-left">
+                        <h3>Active Farmers</h3>
+                        <p>98</p>
+                    </div>
+                    <div class="card-right">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-left">
-                    <h3>Total Success Rate</h3>
-                    <p>99.9%</p>
-                </div>
-                <div class="card-right">
-                    <div class="icon-circle">
-                        <i class="fa-solid fa-circle-check"></i>
+                <div class="card">
+                    <div class="card-left">
+                        <h3>Transaction Success Rate</h3>
+                        <p>99.9%</p>
+                    </div>
+                    <div class="card-right">
+                        <div class="icon-circle">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
-        </div>
-
 
             <!-- GRID -->
             <div class="grid-layout">
                 <div class="box">
-                    <h2>Latest Activity</h2>
+                    <h2>Recent Platform Activities</h2>
                     <ul class="activity-list">
-                        <li>Amos logged in</li>
-                        <li>User John updated contract</li>
-                        <li>New requisition submitted</li>
-                        <li>User deleted record</li>
-                        <li>Admin generated report</li>
+                        <li>Amos listed 3 new products</li>
+                        <li>Doreen purchased agro inputs</li>
+                        <li>George deposited shares</li>
+                        <li>Institution ABC purchased products</li>
+                        <li>Admin approved new farmer account</li>
                     </ul>
                 </div>
 
                 <div class="box">
-                    <h2>Submissions By Users</h2>
+                    <h2>Products Listed by Farmers</h2>
                     <table>
                         <thead>
                             <tr>
-                                <th>User</th><th>Total</th><th>Success</th><th>Failed</th>
+                                <th>Farmer</th><th>Total</th><th>Sold</th><th>Unsold</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -142,41 +141,62 @@
             </div>
 
             <!-- FULL TABLE -->
-            <h2 class="section-title">All User Records</h2>
-            <div class="table-container">
-                <table class="full-table">
-                    <thead>
-                        <tr>
-                            <th>User</th><th>Role</th><th>Status</th><th>Date Created</th><th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Amos Ojok</td>
-                            <td>Admin</td>
-                            <td class="success">Active</td>
-                            <td>2025-01-12</td>
-                            <td><button class="btn"><i class="fa-solid fa-pen-to-square"></i> Edit</button></td>
-                        </tr>
-                        <tr>
-                            <td>Doreen Achen</td>
-                            <td>User</td>
-                            <td class="danger">Inactive</td>
-                            <td>2025-02-03</td>
-                            <td><button class="btn"><i class="fa-solid fa-pen-to-square"></i> Edit</button></td>
-                        </tr>
-                        <tr>
-                            <td>Leala Naiga</td>
-                            <td>User</td>
-                            <td class="success">Active</td>
-                            <td>2025-01-05</td>
-                            <td><button class="btn"><i class="fa-solid fa-pen-to-square"></i> Edit</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
+    <!-- TRANSACTIONS SECTION -->
+    <h2 class="section-title">Transactions</h2>
+    <div class="table-container">
+        <table class="full-table">
+            <thead>
+                <tr>
+                    <th>Farmer</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Amount (UGX)</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Amos Ojok</td>
+                    <td>Maize</td>
+                    <td>50 kg</td>
+                    <td>250,000</td>
+                    <td>Sale</td>
+                    <td class="success">Completed</td>
+                    <td>2025-11-18</td>
+                    <td>
+                        <button class="btn"><i class="fa-solid fa-eye"></i> View</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Doreen Achen</td>
+                    <td>Beans</td>
+                    <td>20 kg</td>
+                    <td>80,000</td>
+                    <td>Sale</td>
+                    <td class="pending">Pending</td>
+                    <td>2025-11-19</td>
+                    <td>
+                        <button class="btn"><i class="fa-solid fa-eye"></i> View</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Leala Naiga</td>
+                    <td>Fertilizer</td>
+                    <td>10 bags</td>
+                    <td>500,000</td>
+                    <td>Purchase</td>
+                    <td class="danger">Failed</td>
+                    <td>2025-11-20</td>
+                    <td>
+                        <button class="btn"><i class="fa-solid fa-eye"></i> View</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
         <!-- OTHER SECTIONS -->
         <div id="users" class="action-container" style="display:none;"></div>
