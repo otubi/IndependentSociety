@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="view-by-id"></div>
         <div class="view-results"></div>
         <div class="view-all">
-            <h3>All Users</h3>
+           
             <div class="view-all-actions"></div>
         </div>
     `;
@@ -79,13 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="delete-results"></div>
         <div class="delete-all">
-            <h3>All Users</h3>
             <div class="delete-all-actions">
                 <button class="delete-all-btn">Delete All Users</button>
             </div>
         </div>
     `;
-    document.body.appendChild($deleteUser);
+    $content.appendChild($deleteUser);
     document.querySelectorAll(".action-container").forEach(el => el.style.display = "none");
 
 
@@ -95,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==================================== ADD USER ===============================================
-
 
 
     const $addUser = document.createElement("div");
@@ -110,25 +108,49 @@ document.addEventListener("DOMContentLoaded", function () {
         </p>
         <div class="add-user-result"></div>
     `;
-    document.body.appendChild($addUser);
+    $content.appendChild($addUser);
     document.querySelectorAll(".action-container").forEach(el => el.style.display = "none");
 
     // Add form fields dynamically
     const $signupPage = $addUser.querySelector(".signup-page");
     const fields = [
-        { name: "id", placeholder: "ID", type: "text" },
-        { name: "FirstName", placeholder: "First Name", type: "text" },
-        { name: "LastName", placeholder: "Last Name", type: "text" },
+        { name: "firstName", placeholder: "First Name", type: "text" },
+        { name: "lastName", placeholder: "Last Name", type: "text" },
+        { name: "password", placeholder: "Password", type: "password" },
         { name: "dob", placeholder: "Date of Birth", type: "date" },
-        { name: "date_created", placeholder: "Date Created", type: "date" },
+        { name: "gender", placeholder: "Gender", type: "select", options: ["Male", "Female"] },
+        { name: "membershipType", placeholder: "Membership Type", type: "select", options: ["regular", "premium", "temporary"] },
+        { name: "nin", placeholder: "NIN Number", type: "text" },
+        { name: "phoneNumber", placeholder: "Phone Number", type: "text" },
+        { name: "occupation", placeholder: "Occupation", type: "text" },
+        // Address fields
+        { name: "district", placeholder: "District", type: "text" },
+        { name: "county", placeholder: "County", type: "text" },
+        { name: "subcounty", placeholder: "Subcounty", type: "text" },
+        { name: "parish", placeholder: "Parish", type: "text" },
+        { name: "village", placeholder: "Village", type: "text" },
+        // Next of kin fields
+        { name: "nextOfKinName", placeholder: "Next of Kin Name", type: "text" },
+        { name: "nextOfKinRelationship", placeholder: "Relationship", type: "text" },
+        { name: "nextOfKinPhone", placeholder: "Next of Kin Phone", type: "text" },
     ];
+
     fields.forEach(f => {
-        const $input = document.createElement("input");
-        $input.type = f.type;
-        $input.name = f.name;
-        $input.placeholder = f.placeholder;
-        $input.required = true;
-        $signupPage.appendChild($input);
+        let $field;
+        if (f.type === "select") {
+            $field = document.createElement("select");
+            $field.name = f.name;
+            $field.required = true;
+            $field.innerHTML = `<option value="">Select ${f.placeholder}</option>` + 
+                f.options.map(opt => `<option value="${opt}">${opt}</option>`).join("");
+        } else {
+            $field = document.createElement("input");
+            $field.type = f.type;
+            $field.name = f.name;
+            $field.placeholder = f.placeholder;
+            $field.required = true;
+        }
+        $signupPage.appendChild($field);
     });
 
 
@@ -340,13 +362,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Show the selected section
                 if (action === "users") {
-                    $viewUser.style.display = "block";
-                    fetchAllUsers();
-                } else if (action === "requisitions") {
+                    $deleteUser.style.display = "block";
+                    $deleteUser.querySelector(".delete-results").innerHTML = "";
+                    fetchAllUsersForUpdate()
+                } else if (action === "projects") {
                     $requisitionHTML.style.display = "block";
                     $deleteUser.querySelector(".delete-results").innerHTML = "";
                     fetchAllRquistionsForUpdate();
-                } else if (action === "orders") {
+                } else if (action === "security") {
                     $orderHTML.style.display = "block";
                     $orderHTML.querySelector(".delete-results").innerHTML = "";
                     $deleteUser.querySelector(".delete-results").innerHTML = "";
@@ -374,230 +397,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    // =========================== FETCH ALL USERS =============================================
-    
-    
-
-    function fetchAllUsers() {
-        const $allContainer = $viewUser.querySelector(".view-all-actions");
-        const $resultsContainer = $viewUser.querySelector(".view-results");
-
-        $allContainer.innerHTML = "<p>Loading users...</p>";
-        $resultsContainer.innerHTML = "";
-
-        fetch(API_URL)
-            .then(res => res.json())
-            .then(res => {
-                const users = res.data?.user || [];
-                $allContainer.innerHTML = "";
-
-                if (users.length === 0) {
-                    $allContainer.innerHTML = "<p>No users found.</p>";
-                    return;
-                }
-
-                const $table = document.createElement("table");
-                $table.className = "users-table";
-                $table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Date of Birth</th>
-                            <th>Date Created</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                `;
-
-                users.forEach(user => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${user.id}</td>
-                        <td>${user.FirstName}</td>
-                        <td>${user.LastName}</td>
-                        <td>${new Date(user.dob).toLocaleDateString()}</td>
-                        <td>${new Date(user.date_created).toLocaleDateString()}</td>
-                    `;
-                    $table.querySelector("tbody").appendChild(row);
-                });
-
-                $allContainer.appendChild($table);
-            })
-            .catch(() => {
-                $resultsContainer.innerHTML = `<p style="color:red;">Failed to fetch users.</p>`;
-            });
-    }
-
-
-
-
-
-    // =========================== VIEW USER BY SINGLE INPUT SEARCH ========================================
-    
-    
-
-
-    const $viewIdContainer = $viewUser.querySelector(".view-by-id");
-    $viewIdContainer.innerHTML = "";
-
-    const $inputSearch = document.createElement("input");
-    $inputSearch.type = "text";
-    $inputSearch.placeholder = "Enter any user detail to search";
-
-    const $btnSearch = document.createElement("button");
-    $btnSearch.textContent = "Search Users";
-
-    $viewIdContainer.append($inputSearch, $btnSearch);
-
-    $btnSearch.addEventListener("click", () => {
-        const $resultsContainer = $viewUser.querySelector(".td-results");
-        const searchValueTodelet = $inputSearch.value.trim().toLowerCase();
-
-        if (!searchValueTodelet) {
-            alert("Please enter a value to search.");
-            $resultsContainer.innerHTML = "";
-            return;
-        }
-
-        $resultsContainer.innerHTML = "<p>Searching users...</p>";
-
-        fetch(API_URL)
-            .then(res => res.json())
-            .then(res => {
-                const users = res.data?.user || [];
-                const filtered = users.filter(user => {
-                    return Object.keys(user).some(key => {
-                        if (!user[key]) return false;
-                        return user[key].toString().toLowerCase().includes(searchValueTodelet);
-                    });
-                });
-
-                $resultsContainer.innerHTML = "";
-
-                if (filtered.length === 0) {
-                    $resultsContainer.innerHTML = "<p>No matching users found.</p>";
-                    return;
-                }
-
-                const $table = document.createElement("table");
-                $table.className = "users-table";
-                $table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Date of Birth</th>
-                            <th>Date Created</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                `;
-
-                filtered.forEach(user => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${user.id}</td>
-                        <td>${user.FirstName}</td>
-                        <td>${user.LastName}</td>
-                        <td>${new Date(user.dob).toLocaleDateString()}</td>
-                        <td>${new Date(user.date_created).toLocaleDateString()}</td>
-                    `;
-                    $table.querySelector("tbody").appendChild(row);
-                });
-
-                $resultsContainer.appendChild($table);
-            })
-            .catch(() => {
-                $resultsContainer.innerHTML = `<p style="color:red;">Failed to fetch users.</p>`;
-            });
-    });
-
-    
-
-    // ============================================= ADD USER ==================================================
-
-
-
-
-
-    
-
-
-
-
-
-
-
-   // ================= FUNCTION TO FETCH USERS AND DELETE ===============================
-
-
-
-    function fetchAllUsersForDelete() {
-        const $allContainer = $deleteUser.querySelector(".delete-all-actions");
-        const $resultsContainer = $deleteUser.querySelector(".delete-results");
-
-        $allContainer.innerHTML = "<p>Loading users...</p>";
-        $resultsContainer.innerHTML = "";
-
-        fetch(API_URL)
-            .then(res => res.json())
-            .then(res => {
-                const users = res.data?.user || [];
-                $allContainer.innerHTML = "";
-
-                if (users.length === 0) {
-                    $allContainer.innerHTML = "<p>No users found.</p>";
-                    return;
-                }
-
-                const $table = document.createElement("table");
-                $table.className = "users-table";
-                $table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Date of Birth</th>
-                            <th>Date Created</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                `;
-
-                users.forEach(user => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${user.id}</td>
-                        <td>${user.FirstName}</td>
-                        <td>${user.LastName}</td>
-                        <td>${new Date(user.dob).toLocaleDateString()}</td>
-                        <td>${new Date(user.date_created).toLocaleDateString()}</td>
-                        <td>
-                            <button class="delete-user-btn-row" data-id="${user._id}">Delete</button>
-                        </td>
-                    `;
-                    row.querySelector(".delete-user-btn-row").addEventListener("click", () => deleteUserById(user._id));
-                    $table.querySelector("tbody").appendChild(row);
-                });
-
-                $allContainer.appendChild($table);
-            })
-            .catch(() => {
-                $resultsContainer.innerHTML = `<p style="color:red;">Failed to fetch users.</p>`;
-            });
-    }
-
-
-
-
-
-    // // ==================================== DELETE USER BY ID ========================================
-    
+       
     
     function deleteUserById(userId) {
         const $resultsContainer = $deleteUser.querySelector(".delete-results");
@@ -627,46 +427,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
     // Select the container (do NOT empty it)
     const $deleteIdContainer = $deleteUser.querySelector(".delete-by-id");
 
     // Select the existing input (we’ll use or add next to it)
     const existingInput = $deleteIdContainer.querySelector("input");
-    
 
-    // ✅ Create new Search input if not already there
+
+    // ==========================
+    // CREATE SEARCH UI
+    // ==========================
+
+    // Label
+    const $labelSearch = document.createElement("label");
+    $labelSearch.textContent = "Search:";
+    $labelSearch.classList.add("search-label");
+
+    // Input (existing or new)
     const $inputSearchDelete = existingInput || document.createElement("input");
     $inputSearchDelete.type = "text";
     $inputSearchDelete.placeholder = "Enter any user detail to search";
     $inputSearchDelete.classList.add("search-input");
 
-    // ✅ Create Search button
+    // Search button (kept)
     const $btnSearchDelete = document.createElement("button");
     $btnSearchDelete.textContent = "Search";
     $btnSearchDelete.classList.add("search-btn");
 
-    // ✅ Create Add User button
+    // Add User button (unchanged)
     const $btnAddUser = document.createElement("button");
     $btnAddUser.textContent = "Add User";
     $btnAddUser.classList.add("add-user-btn");
 
-    // ✅ Insert them without clearing existing HTML
-    $deleteIdContainer.append($inputSearchDelete, $btnSearchDelete, $btnAddUser);
+    // Insert into the container without deleting HTML
+    $deleteIdContainer.append($labelSearch, $inputSearchDelete);
 
-    // ========== ADD FUNCTIONALITY ==========
-    // Add user click handler
+
+    // ==========================
+    // ADD USER BUTTON FUNCTION
+    // ==========================
     $btnAddUser.addEventListener("click", () => {
-    // Hide other action containers if needed
-    document.querySelectorAll(".action-container").forEach(el => el.style.display = "none");
-
-    // Show the add user form
-    $addUser.style.display = "block";
-
-    // Optionally scroll into view
-    $addUser.scrollIntoView({ behavior: "smooth" });
+        document.querySelectorAll(".action-container").forEach(el => el.style.display = "none");
+        $addUser.style.display = "block";
+        $addUser.scrollIntoView({ behavior: "smooth" });
     });
-
 
     const $btnSave = $addUser.querySelector("#btn-add-user");
 
@@ -682,13 +486,11 @@ document.addEventListener("DOMContentLoaded", function () {
             userData[name] = value;
         });
 
-        // Required field check
         if (!userData.id || !userData.FirstName || !userData.LastName || !userData.dob) {
             alert("Please fill in all required fields.");
             return;
         }
 
-        // Submit to API
         fetch(API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -704,20 +506,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     `<p style="color:green;">User added successfully!</p>`;
                 $signupPage.querySelectorAll("input").forEach(input => input.value = "");
 
-                        fetchAllUsersForUpdate();
-                        setTimeout(() => {
-                            // Hide Add User form
-                            $addUser.style.display = "none";
-
-                            // Show Users container
-                            $deleteUser.style.display = "block";
-
-                            // Scroll to Users section
-                            $deleteUser.scrollIntoView({ behavior: "smooth" });
-                        }, 500);
-                
+                fetchAllUsersForUpdate();
+                setTimeout(() => {
+                    $addUser.style.display = "none";
+                    $deleteUser.style.display = "block";
+                    $deleteUser.scrollIntoView({ behavior: "smooth" });
+                }, 500);
             })
-            
             .catch(err => {
                 $addUser.querySelector(".add-user-result").innerHTML =
                     `<p style="color:red;">${err.message || "Failed to add user."}</p>`;
@@ -725,14 +520,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-
-    // ========== SEARCH FUNCTIONALITY ==========
-    $btnSearchDelete.addEventListener("click", () => {
+    // ==========================
+    // LIVE SEARCH FUNCTION
+    // ==========================
+    function runSearch() {
         const $resultsContainer = $deleteUser.querySelector(".delete-results");
         const searchValue = $inputSearchDelete.value.trim().toLowerCase();
 
         if (!searchValue) {
-            alert("Please enter a value to search.");
             $resultsContainer.innerHTML = "";
             return;
         }
@@ -743,12 +538,13 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => res.json())
             .then(res => {
                 const users = res.data?.user || [];
-                const filtered = users.filter(user => {
-                    return Object.keys(user).some(key => {
-                        if (!user[key]) return false;
-                        return user[key].toString().toLowerCase().includes(searchValue);
-                    });
-                });
+
+                const filtered = users.filter(user =>
+                    Object.keys(user).some(key =>
+                        user[key] &&
+                        user[key].toString().toLowerCase().includes(searchValue)
+                    )
+                );
 
                 $resultsContainer.innerHTML = "";
 
@@ -786,10 +582,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             <button class="delete-user-btn-row" data-id="${user._id}">Delete</button>
                         </td>
                     `;
+
                     row.querySelector(".delete-user-btn-row")
                         .addEventListener("click", () => deleteUserById(user._id));
+
                     row.querySelector(".update-user-btn")
                         .addEventListener("click", () => updateUserById(user._id));
+
                     $table.querySelector("tbody").appendChild(row);
                 });
 
@@ -798,14 +597,18 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(() => {
                 $resultsContainer.innerHTML = `<p style="color:red;">Failed to fetch users.</p>`;
             });
-    });
+    }
 
 
+    // ==========================
+    // ENABLE LIVE SEARCH
+    // ==========================
+    $inputSearchDelete.addEventListener("keyup", runSearch);
+    $btnSearchDelete.addEventListener("click", runSearch);
 
 
 
     //======================================= Function to fatch Users and update =====================================
-
 
     function fetchAllUsersForUpdate() {
         const $allContainer = $deleteUser.querySelector(".delete-all-actions");
@@ -911,76 +714,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 $updateModal.classList.add("hidden");
             });
     }
-
-
-
-
-
-
-
-    // =================================== Handle Save using PATCH ============================================
-
-
-    document.querySelector("#update-user-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const formData = new FormData(e.target);
-        const updatedUser = Object.fromEntries(formData.entries());
-
-        // Use the hidden _id for backend
-        const userId = updatedUser._id;
-        const { id, _id, ...payload } = updatedUser; // remove frontend id and hidden _id from body
-
-        console.log("Updating user:", userId, "with data:", payload);
-
-        fetch(`${API_URL}/${userId}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        })
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-                return res.json();
-            })
-            .then(() => {
-                alert("User updated successfully!");
-                $updateModal.classList.add("hidden");
-                fetchAllUsersForUpdate();
-            })
-            .catch(err => {
-                alert("Failed to update user.");
-            });
-    });
-
-
-    
-    // --- Handle Cancel Button ---
-    document.querySelector(".cancel-update-btn").addEventListener("click", () => {
-        $updateModal.classList.add("hidden");
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  =================================================================================                     ===
-
-
-//=================================================== ORDER ==========================================================
-
-
-
-
 
 
 
